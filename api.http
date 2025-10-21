@@ -1,0 +1,57 @@
+### Registrar um novo usuário
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Maikon Gino",
+  "email": "maikon@teste.com",
+  "password": "password123"
+}
+
+### Fazer o Login do usuário
+@no-cookie-jar
+
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "maikon@teste.com",
+  "password": "password123"
+}
+
+### BUSCAR PERFIL (READ)
+GET http://localhost:8080/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlrb25AdGVzdGUuY29tIiwiaWF0IjoxNzYxMDY5NTU1LCJleHAiOjE3NjExMDU1NTV9.Yw_3ufigWBuofyq4ywoCWqKk-da0xnlkKFTRcUZGkbQ
+
+### ATUALIZAR PERFIL (UPDATE)
+PUT http://localhost:8080/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlrb25AdGVzdGUuY29tIiwiaWF0IjoxNzYxMDY5NTU1LCJleHAiOjE3NjExMDU1NTV9.Yw_3ufigWBuofyq4ywoCWqKk-da0xnlkKFTRcUZGkbQ
+Content-Type: application/json
+
+{
+  "name": "Maikon Gino Junior",
+  "email": "maikon.junior@teste.com"
+}
+
+### SALVAR RECEITA (CREATE) - Receita ID 2 será criada
+POST http://localhost:8080/api/recipes/save
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlrb25AdGVzdGUuY29tIiwiaWF0IjoxNzYxMDY5NTU1LCJleHAiOjE3NjExMDU1NTV9.Yw_3ufigWBuofyq4ywoCWqKk-da0xnlkKFTRcUZGkbQ
+Content-Type: application/json
+
+{
+  "title": "Arroz de Frango Salvo para Delete",
+  "prepTime": "30 minutos",
+  "servings": 4,
+  "difficulty": "Fácil",
+  "ingredients": ["arroz", "frango", "pimentao", "tempero"],
+  "steps": ["Cozinhe o arroz", "Refogue o frango"],
+  "tips": ["Sirva quente"]
+}
+
+### BUSCAR LISTA DE RECEITAS SALVAS (READ)
+GET http://localhost:8080/api/users/me/saved-recipes
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlrb25AdGVzdGUuY29tIiwiaWF0IjoxNzYxMDY5NTU1LCJleHAiOjE3NjExMDU1NTV9.Yw_3ufigWBuofyq4ywoCWqKk-da0xnlkKFTRcUZGkbQ
+
+### DELETAR RECEITA SALVA (DELETE)
+DELETE http://localhost:8080/api/users/me/saved-recipes/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlrb25AdGVzdGUuY29tIiwiaWF0IjoxNzYxMDY5NTU1LCJleHAiOjE3NjExMDU1NTV9.Yw_3ufigWBuofyq4ywoCWqKk-da0xnlkKFTRcUZGkbQ

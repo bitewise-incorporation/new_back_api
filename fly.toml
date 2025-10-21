@@ -1,0 +1,27 @@
+app = "bitewise-api-spring"
+primary_region = "gru"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+SPRING_PROFILES_ACTIVE = "prod"
+PORT = 8080
+
+[mounts]
+# CORRIGIDO: O Fly.io não aceita hífen em nomes de volumes
+source="bitewise_postgres_data" # Mude de 'bitewise-postgres-data' para este!
+destination="/mnt/postgres"
+
+[[services]]
+internal_port = 8080
+protocol = "tcp"
+
+[[services.ports]]
+port = 80
+handlers = ["http"]
+force_https = true
+
+[[services.ports]]
+port = 443
+handlers = ["tls", "http"]
