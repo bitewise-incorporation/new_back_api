@@ -37,8 +37,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
-            // envia o DTO inteiro para o service (preserva os dados e a lógica de registro)
-            authService.register(registerRequest);
+            authService.register(registerRequest.getName(), registerRequest.getEmail(), registerRequest.getPassword());
             return ResponseEntity.ok(new MessageResponse("Usuário registrado com sucesso."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -55,7 +54,6 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(userDetails.getUsername());
 
-        // usa o construtor com 2 parâmetros do AuthResponse (token e tipo)
-        return ResponseEntity.ok(new AuthResponse(token, "Bearer"));
+        return ResponseEntity.ok(new AuthResponse(token, "Bearer", "Login bem-sucedido"));
     }
 }
