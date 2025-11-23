@@ -7,6 +7,8 @@ import br.com.bitewise.api.dto.RegisterRequest;
 import br.com.bitewise.api.service.AuthService;
 import br.com.bitewise.api.util.JwtUtil;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
@@ -46,14 +50,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
+        logger.info("🔐 [AuthController] Login request received for email: {}", loginRequest.getEmail());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
 
-        String token = jwtUtil.generateToken(userDetails.getUsername());
+            String token = jwtUtil.generateToken(userDetails.getUsername());
 
-        return ResponseEntity.ok(new AuthResponse(token, "Bearer", "Login bem-sucedido"));
+            logger.info("✅ [AuthController] Login bem-sucedido para: {}", loginRequest.getEmail());
+            return ResponseEntity.ok(new AuthResponse(token, "Bearer", "Login bem-sucedido"));
+        } catch (Exception e) {
+            logger.error("❌ [AuthController] Login falhou: {}", e.getMessage());
+            throw e;
+        }
     }
 }

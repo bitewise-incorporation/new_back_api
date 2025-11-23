@@ -66,8 +66,10 @@ public class GeminiService {
 
         URI uri;
         try {
+            // Build the complete Gemini API endpoint with model and method
+            String fullUrl = baseUrl + "/gemini-2.5-pro:generateContent";
             uri = UriComponentsBuilder
-                    .fromHttpUrl(baseUrl)
+                    .fromHttpUrl(fullUrl)
                     .queryParam("key", cleanKey)
                     .build()
                     .toUri();
