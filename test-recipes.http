@@ -1,0 +1,47 @@
+### Health Check
+GET http://localhost:8081/health
+
+### Login
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user001@test.com",
+  "password": "Password123"
+}
+
+### Generate Recipe (coloque o token do login acima aqui)
+POST http://localhost:8081/api/recipes/generate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMDAxQHRlc3QuY29tIiwiaWF0IjoxNzYzODYzOTU3LCJleHAiOjE3NjM5NTAzNTd9.DKYpOYFchzWzFT0Ui8vJUrI09GW7Z4C3CZFJIRnyUZGLGEucnPqJt-sB2wIGHo_3
+
+{
+  "ingredients": ["frango", "arroz", "cebola"],
+  "servings": 2,
+  "dietType": "balanced",
+  "cookingTime": 30
+}
+
+### Save Recipe
+POST http://localhost:8081/api/recipes/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMDAxQHRlc3QuY29tIiwiaWF0IjoxNzYzODYzOTU3LCJleHAiOjE3NjM5NTAzNTd9.DKYpOYFchzWzFT0Ui8vJUrI09GW7Z4C3CZFJIRnyUZGLGEucnPqJt-sB2wIGHo_3
+
+{
+  "title": "Frango com Arroz",
+  "description": "Receita deliciosa",
+  "ingredients": "frango, arroz, alho",
+  "instructions": "Cozinhe o frango, depois o arroz",
+  "servings": 2,
+  "cookingTime": 30,
+  "nutritionFacts": {
+    "calories": 520,
+    "protein": 40,
+    "carbs": 60,
+    "fat": 12
+  }
+}
+
+### List Recipes
+GET http://localhost:8081/api/recipes
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMDAxQHRlc3QuY29tIiwiaWF0IjoxNzYzODYzOTU3LCJleHAiOjE3NjM5NTAzNTd9.DKYpOYFchzWzFT0Ui8vJUrI09GW7Z4C3CZFJIRnyUZGLGEucnPqJt-sB2wIGHo_3

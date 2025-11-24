@@ -1,0 +1,20 @@
+# H2 Database Configuration for Testing
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# Hibernate Configuration
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+# JWT Configuration (dummy values for testing)
+jwt.secret=test-secret-key-for-testing-only
+jwt.expiration.time=86400000
+
+# Google/Gemini API (dummy values for testing)
+google.api.key=test-api-key
+google.cloud.project-id=test-project-id
+google.cloud.location-id=us-central1
+gemini.api.base-url=https://generativelanguage.googleapis.com/v1beta/models
