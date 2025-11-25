@@ -1,13 +1,9 @@
-package br.com.bitewise.api;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ApiApplicationTests {
-
+public class AuthControllerTest {
     @Test
-    void contextLoads() {
+    public void contextLoads() {
         assertTrue(true);
     }
-
 }

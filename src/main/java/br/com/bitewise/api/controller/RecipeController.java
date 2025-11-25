@@ -47,14 +47,33 @@ public class RecipeController {
     @PostMapping("/generate")
     public ResponseEntity<?> generateRecipe(@Valid @RequestBody GenerateRecipeRequest request) {
         try {
+            logger.info("🚀 [RecipeController] GET /api/recipes/generate");
+            
+            // Verificar autenticação
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                logger.warn("❌ [RecipeController] Usuário não autenticado!");
+                return ResponseEntity.status(401).body(new MessageResponse("Não autenticado"));
+            }
+            
+            String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+            logger.info("👤 [RecipeController] Usuário autenticado: {}", userEmail);
+            logger.info("📝 [RecipeController] Ingredientes recebidos: {}", request.getIngredients());
+            
+            // Chamada ao serviço Gemini
+            logger.info("🔄 [RecipeController] Chamando GeminiService.generateRecipe()...");
             RecipeResponse recipe = geminiService.generateRecipe(request.getIngredients());
+            
+            logger.info("✅ [RecipeController] Receita gerada com sucesso!");
+            logger.info("📋 [RecipeController] Título: {}", recipe.getTitle());
+            
             return ResponseEntity.ok(recipe);
         } catch (HttpClientErrorException e) {
-            logger.error("Erro HTTP ao chamar a Gemini API: Status={}, Resposta={}", e.getStatusCode(), e.getResponseBodyAsString());
-            throw new RuntimeException("Falha ao comunicar com a IA: " + e.getStatusCode() + " - " + e.getResponseBodyAsString(), e);
+            logger.error("❌ [RecipeController] Erro HTTP Gemini: {} - {}", e.getStatusCode(), e.getResponseBodyAsString());
+            return ResponseEntity.status(500).body(new MessageResponse("Erro ao chamar IA: " + e.getStatusCode()));
         } catch (Exception e) {
-            logger.error("Erro inesperado na geração de receita: {}", e.getMessage());
-            throw new RuntimeException("Falha ao gerar receita com a IA.", e);
+            logger.error("❌ [RecipeController] Erro geral: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(new MessageResponse("Erro: " + e.getMessage()));
         }
     }
 
