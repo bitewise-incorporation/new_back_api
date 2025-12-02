@@ -4,7 +4,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+### Environment & Secrets ###
+.env
+.env.local
+*.log
+*.log.*
+
+### IDE ###
 .apt_generated
 .classpath
 .factorypath
